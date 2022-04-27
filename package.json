@@ -6,12 +6,12 @@
   "scripts": {
     "start": "node -r dotenv/config main.js",
     "dev": "nodemon main.js",
-    "nodemon:cluster": "nodemon main.js --mode:cluster",
-    "nodemon:fork": "nodemon main.js --mode:fork",
+    "nodemon:cluster": "nodemon main.js --mode=cluster",
+    "nodemon:fork": "nodemon main.js --mode=fork",
     "forever:start": "forever start main.js",
     "forever:fork": "forever start -- main.js --PORT=8080 --mode=fork --watch ",
     "forever:cluster": "forever start -- main.js --PORT=8080 --mode=cluster --watch",
-    "pm2:cluster": "pm2 start cluster.main.js --watch",
+    "pm2:cluster": "pm2 start cluster.main.js --watch -i max",
     "pm2:worker": "pm2 start worker.main.js --watch"
   },
   "keywords": [],
@@ -38,6 +38,7 @@
     "node-fetch": "^2.6.7",
     "nodemon": "^2.0.15",
     "normalizr": "^3.6.2",
+    "nvm": "0.0.4",
     "os": "^0.1.2",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
