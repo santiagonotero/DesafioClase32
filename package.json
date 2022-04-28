@@ -11,7 +11,7 @@
     "forever:start": "forever start main.js",
     "forever:fork": "forever start -- main.js --PORT=8080 --mode=fork --watch ",
     "forever:cluster": "forever start -- main.js --PORT=8080 --mode=cluster --watch",
-    "pm2:cluster": "pm2 start cluster.main.js --watch -i max",
+    "pm2:cluster": "pm2 start main.js --watch -i max",
     "pm2:worker": "pm2 start worker.main.js --watch"
   },
   "keywords": [],
