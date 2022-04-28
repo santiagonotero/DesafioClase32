@@ -1,6 +1,8 @@
 const http = require('http')
 const server = http.createServer()
 
+let cantNumeros
+
 const randoms=(cant=100000000)=>{
 
     let listaNum = {}
@@ -14,20 +16,17 @@ const randoms=(cant=100000000)=>{
 
         listaNum[numRandom] = (listaNum[numRandom] || 0 ) +1
 
-
-        // listaNum[indiceLista] = Math.random()*1000
-        // listaNum[indiceLista] = listaNum[indiceLista].toFixed(0)
-        // indiceLista++
     } 
+
+    cantNumeros = cant
     return listaNum
 }
 
    process.on('message', (msg)=>{
        if (msg.message === 'START'){
             const listado = randoms(msg.cant)
-            process.send(listado)
+            process.send({msg:'terminado', listado:listado, cant:cantNumeros})
        }
    }) 
 
-   process.send('terminado')
   

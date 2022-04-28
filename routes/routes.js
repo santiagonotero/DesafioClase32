@@ -89,7 +89,7 @@ router.get('/info', (req,res)=>{
 
 router.get('/api/randoms', async (req,res)=>{
 
-    const {cant} = req.query
+    let {cant} = req.query
 
     let array={}
 
@@ -99,20 +99,22 @@ router.get('/api/randoms', async (req,res)=>{
         message: 'START',
         cant: cant
     })
-    procesoHijo.on('message', (devuelto)=>{
-        array = JSON.stringify(devuelto, null,2)
-        //array = devuelto
-        console.log(array)
-    })
-    //res.send(`${array}`)
-    res.render('randoms', {layout: 'randoms', array:array, cant})
-})
 
+    procesoHijo.on('message', (devuelto)=>{
+        if(devuelto.msg ==='terminado'){
+            array = JSON.stringify(devuelto.listado, null,2)
+            cant = cant || devuelto.cant
+
+            res.render('randoms', {layout: 'randoms', array:array, cant})
+        }
+    })
+})
 
 router.get('/api/productos-test', (req,res)=>{
 
     const listaFake = faker.crearLista()
     res.render('faker', { listaFake: listaFake })
   })
+
 
   module.exports = router
