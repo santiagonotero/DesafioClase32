@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const fs = require('fs/promises');
 const path = require('path');
+const logger = require("../Logs/winston")
 
 class Productos{
 
@@ -23,6 +24,7 @@ class Productos{
             return producto
         }
         catch(err){
+            logger.error('Error agregando producto')
            console.log(err)
         }
     }
@@ -32,6 +34,7 @@ class Productos{
             return data
         }
         catch(err){
+            logger.error('Error cargando producto')
             console.log(err)
         }
     }

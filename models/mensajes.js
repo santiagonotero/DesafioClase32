@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const fs = require('fs/promises');
 const path = require('path');
 const {schema, normalize} = require('normalizr')
+const logger = require("../Logs/winston")
 
 class Mensajes{
 
@@ -25,7 +26,7 @@ class Mensajes{
     async cargarMensajes(){
         try{ 
 
-            //proceso dde normalización
+            //proceso de normalización
             const schemaAuthor = new schema.Entity('author',{},{idAttribute: 'id'}) //id contiene el email del autor 
             const schemaMensaje = new schema.Entity('mensajes',{
                 author: schemaAuthor
@@ -52,6 +53,7 @@ class Mensajes{
 
         }
         catch(err){
+            logger.error('Error cargando mensajes')
             console.log(err)
         }
     }
@@ -62,6 +64,7 @@ class Mensajes{
             return msgPool
         }
         catch(err){
+            logger.error('Error agregando mensaje')
             console.log(err)
         }
     }

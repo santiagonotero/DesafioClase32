@@ -1,5 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy
 const Usuarios = require('../models/users')
+const logger = require("../Logs/winston")
 
 module.exports = (passport) =>{
 
@@ -8,13 +9,15 @@ module.exports = (passport) =>{
           // Verifica que exista el email
           if (!await Usuarios.existsByEmail(email)) {
             // regresar al usuario a la misma pantalla
-            console.log("no existe desde passport")
+            logger.error('No existe usuario')
+            //console.log("no existe desde passport")
             return done(null, false, { message: 'user does not exist!' })
           }
     
           // Verifica que los passwords coincidan
           // { messages.error: []} // array de errores
           if (!await Usuarios.isPasswordValid(email, password)) {
+            logger.warn('Contraseña incorrecta')
             return done(null, false, { message: 'incorrect password!' }) 
           }
     
@@ -23,7 +26,8 @@ module.exports = (passport) =>{
     
           done(null, user)
         } catch (e) {
-          done(e)
+            logger.error(`Error de autorización ${e}`)
+            done(e)
         }
       }
 
@@ -33,7 +37,7 @@ module.exports = (passport) =>{
           // Verificar que no exista el email
           if (await Usuarios.existsByEmail(email)) {
             // regresar al usuario a la misma pantalla
-            console.log("Ya existe un usuario con este email")
+            logger.error("Ya existe un usuario con este email")
             return done(null, false, { message: 'user already exists!' })
           }
           // guardar usuario en db
@@ -43,13 +47,12 @@ module.exports = (passport) =>{
             nombre
           })
     
-          console.log(user)
-    
           done(null, {
             ...user,
             id: user._id
           })
         } catch (err) {
+          logger.error(`Error de registro ${err}`)
           done(err)
         }
       }
