@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "node -r dotenv/config main.js",
+    "start": "node main.js",
     "dev": "nodemon main.js",
     "nodemon:cluster": "nodemon main.js --mode=cluster",
     "nodemon:fork": "nodemon main.js --mode=fork",
