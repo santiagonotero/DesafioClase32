@@ -39,6 +39,7 @@
     "forever": "^4.0.3",
     "knex": "^1.0.3",
     "log4js": "^6.4.6",
+    "mongoose": "^6.3.2",
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.7",
     "nodemon": "^2.0.15",
