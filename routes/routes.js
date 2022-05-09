@@ -137,12 +137,12 @@ router.get('/api/randoms', async (req,res)=>{
    })
 })
 
-router.get('/api/productos-test', (req,res)=>{
+// router.get('/api/productos-test', (req,res)=>{
 
-    logger.info('Usuario accedió a la ruta /api/productos-test')
-    const listaFake = faker.crearLista()
-    res.render('faker', { listaFake: listaFake })
-  })
+//     logger.info('Usuario accedió a la ruta /api/productos-test')
+//     const listaFake = faker.crearLista()
+//     res.render('faker', { listaFake: listaFake })
+//   })
 
 
   router.get('*', (req,res)=>{
