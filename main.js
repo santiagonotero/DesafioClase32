@@ -114,8 +114,8 @@ const iniciarMain=()=>{
         
       })
       
-      server.listen(args.PORT, function () {
-        console.log(`Servidor corriendo en http://localhost:${args.PORT}`)
+      server.listen(process.env.PORT, function () {   //antes era args.port
+        console.log(`Servidor corriendo en http://localhost:${process.env.PORT}`)
         //logger.info(`Application has started with pid: ${process.pid}`)
         //logger.error(`Servidor corriendo en http://localhost:${args.PORT}`)
       })
