@@ -120,21 +120,21 @@ router.get('/api/randoms', async (req,res)=>{
 
     logger.info('Usuario accedió a la ruta /api/randoms')
 
-    // const procesoHijo = await fork(path.join(__dirname, '../models/randoms.js'))
+    const procesoHijo = await fork(path.join(__dirname, '../models/randoms.js'))
 
-    // procesoHijo.send({
-    //     message: 'START',
-    //     cant: cant
-    // })
+    procesoHijo.send({
+        message: 'START',
+        cant: cant
+    })
 
-    // procesoHijo.on('message', (devuelto)=>{
-    //     if(devuelto.msg ==='terminado'){
-    //         array = JSON.stringify(devuelto.listado, null,2)
-    //         cant = cant || devuelto.cant
+    procesoHijo.on('message', (devuelto)=>{
+        if(devuelto.msg ==='terminado'){
+            array = JSON.stringify(devuelto.listado, null,2)
+            cant = cant || devuelto.cant
 
             res.render('randoms', {layout: 'randoms', array:array, cant})
-//        }
-//    })
+       }
+   })
 })
 
 router.get('/api/productos-test', (req,res)=>{
