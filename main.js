@@ -122,7 +122,7 @@ const iniciarMain=()=>{
     }
     
       
-      const args = yargs.default({ PORT: 80, mode:'fork'}).argv
+      const args = yargs.default({ PORT: 8080, mode:'fork'}).argv
   
       console.log(`PORT: ${args.PORT} -- MODE: ${args.mode}`)
   
