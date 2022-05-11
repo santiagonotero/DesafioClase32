@@ -82,10 +82,12 @@ const iniciarMain=()=>{
     io.on("connection", async function (socket) {   //Mensaje que indica una conexión. 
       console.log("Un cliente se ha conectado")
 
-      messagePool = await msgMethod.cargarMensajes()
-      productList = await prodMethod.cargarProductos()
+      //messagePool = await msgMethod.cargarMensajes()
+      //productList = await prodMethod.cargarProductos()
 
-      socket.emit("messages", messagePool)
+      msgMethod.cargarMensajes().then((listaMensajes)=>{
+        socket.emit('messages', listaMensajes)
+      })
 
       prodMethod.cargarProductos().then((listaProductos)=>{
         socket.emit('server:productList', listaProductos)
@@ -114,19 +116,18 @@ const iniciarMain=()=>{
         
       })
       
-      server.listen(process.env.PORT, function () {   //antes era args.port
-        console.log(`Servidor corriendo en http://localhost:${process.env.PORT}`)
-        //logger.info(`Application has started with pid: ${process.pid}`)
-        //logger.error(`Servidor corriendo en http://localhost:${args.PORT}`)
+      server.listen(PORT, function () {   //antes era args.port
+        console.log(`Servidor corriendo en http://localhost:${PORT}`)
+
       })
     }
     
       
       const args = yargs.default({ PORT: 8080, mode:'fork'}).argv
   
-      console.log(`PORT: ${args.PORT} -- MODE: ${args.mode}`)
+      //console.log(`PORT: ${args.PORT} -- MODE: ${args.mode}`)
   
-      //const PORT = process.env.PORT || 8080
+      const PORT = process.env.PORT || 8080
   
       if(args.mode =='cluster'){   //Si el modo es Cluster...
   

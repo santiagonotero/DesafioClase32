@@ -20,12 +20,11 @@ router.get('/', auth, async (req,res)=>{
     logger.info('Un usuario accedió al sitio')
 
     const items = await modelProductos.cargarProductos()
-    const mensajes = await modelMensajes.cargarMensajes()  
+    const mensajes = await modelMensajes.cargarMensajes() 
     
-    console.log(req.user)
     const name = req.user.nombre
 
-    res.render('index' , { items: items, name: name, mensajes: mensajes})
+    res.render('index' , { name: name, mensajes: mensajes, items: items})
 
 })
 

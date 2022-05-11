@@ -10,7 +10,6 @@ let date=new Date()
 
 socket.on("messages", (message)=> {  //Mensaje para actualizar el listado de mensajes de la página index.html
    
-    
     //Proceso de desnormalización
     const schemaAuthor = new normalizr.schema.Entity('author',{},{idAttribute: 'id'})
             const schemaMensaje = new normalizr.schema.Entity('mensajes',{
@@ -23,21 +22,18 @@ socket.on("messages", (message)=> {  //Mensaje para actualizar el listado de men
     
     const desnormalizado = normalizr.denormalize('mensajes', schemaData, message.entities)
     const mensajes = desnormalizado.mensajes
-    
     const compresion1 = JSON.stringify(message).length
     const compresion2 = JSON.stringify(mensajes).length
     const compresion = (compresion1/compresion2)*100
 
     console.log('% de compresion: %d %' , compresion.toFixed(0))
 
-    console.log('mensajes: %o' ,mensajes)
-
     let plantillaChat=document.getElementById('plantillaChat')
     if(plantillaChat){
-        let compile = Handlebars.compile(plantillaChat.innerHTML)
-        let result = compile({msjs:mensajes, compresion:compresion.toFixed(0)})
+        let compiled = Handlebars.compile(plantillaChat.innerHTML)
+        let result = compiled(mensajes)
         let msgPool=document.getElementById('areaChat')
-        msgPool.innerHTML += result
+        msgPool.innerHTML = result
     }
 
 })
@@ -46,10 +42,10 @@ socket.on('server:productList', (items)=>{  //Mensaje para actualizar el listado
    
     let plantillaProductos=document.getElementById('plantillaProductos')
     if( plantillaProductos){
-        let compile = Handlebars.compile(plantillaProductos.innerHTML )
-        let result = compile(items)
+        let compiled = Handlebars.compile(plantillaProductos.innerHTML )
+        let result = compiled(items)
         let listado=document.getElementById("listadoProductos")
-        listado.innerHTML = result
+       listado.innerHTML = result
     }
 })
 

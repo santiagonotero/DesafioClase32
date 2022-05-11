@@ -16,7 +16,8 @@
       </ul>
     </div>
   <p>Listado de productos</p>
-    <div id="listadoProductos"> 
+    <div id="listadoProductos"> </div>
+    <script id="plantillaProductos" type="text/x-handlebars-template">
       <table>
       <thead>
         <tr>
@@ -35,7 +36,7 @@
           {{/each}}
         </tbody>
       </table>
-    </div>
+    </script>
   <div>
   <p>Área de mensajes </p>
     <form >
@@ -49,30 +50,30 @@
       <button type="submit" onsubmit="addMessage(this)">Enviar</button>
     </form>
     
-    <script id="plantillaChat" type="text/x-handlebars-template">
+    </div>
     <p id="compresion">Compresión de mensajes: {{{compresion}}} </p>
-    <table>
-      <thead>
-        <tr>
-          <th>Avatar</th>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Alias</th>
-          <th>Mensaje</th>
-        </tr>
-      </thead>
-      <tbody>
-          {{#each msjs}}
+    <script id="plantillaChat" type="text/x-handlebars-template">
+      <table>
+        <thead>
           <tr>
-              <td>{{this.author.avatar}}</td>
-              <td>{{this.author.nombre}}</td>
-              <td>{{this.author.apellido}}</td>
-              <td>{{this.author.alias}} ({{this.author.id}})</td>
-              <td>{{this.text}}</td>
-          {{/each}}
+            <th>Avatar</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Alias</th>
+            <th>Mensaje</th>
           </tr>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+            {{#each mensajes}}
+            <tr>
+                <td>{{this.author.nombre}}</td>
+                <td>{{this.author.apellido}}</td>
+                <td>{{this.author.alias}} ({{this.author.id}})</td>
+                <td>{{this.text}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+      </table>
     </script>
     <div id="areaChat" ></div>
   </div>
