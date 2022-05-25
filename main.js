@@ -15,7 +15,6 @@ const flash = require('express-flash')
 const initializePassport = require('./Passport/local')
 const prodMethod = require('./models/productos')
 const msgMethod = require('./models/mensajes')
-const { HOSTNAME, SCHEMA, DATABASE, USER, PASSWORD, OPTIONS } = require("./DBconfig/Mongo")
 const homeRouter = require('./routes/routes')
 const yargs = require('yargs/yargs') (process.argv.slice(2))
 const cluster = require('cluster')
@@ -29,7 +28,7 @@ require('dotenv').config({
 const iniciarMain=()=>{
   
   
-  mongoose.connect(`${process.env.SCHEMA}://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOSTNAME}/${process.env.DATABASE}?${process.env.OPTIONS}`).then(()=>{
+  mongoose.connect(`${process.env.MONGODB_SCHEMA}://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOSTNAME}/${process.env.MONGODB_DATABASE}?${process.env.MONGODB_OPTIONS}`).then(()=>{
     console.log("Conectado con base de datos MongoDB")
   })
   
@@ -53,7 +52,7 @@ const iniciarMain=()=>{
       saveUninitialized:true,
       
       store:new MongoStore({
-        mongoUrl: `${process.env.SCHEMA}://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOSTNAME}/${process.env.DATABASE}?${process.env.OPTIONS}`,
+        mongoUrl: `${process.env.MONGODB_SCHEMA}://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOSTNAME}/${process.env.MONGODB_DATABASE}?${process.env.MONGODB_OPTIONS}`,
         expires: 60,
         createdAt: new Date(),
         autoRemove: 'native',
@@ -81,10 +80,6 @@ const iniciarMain=()=>{
     // iniciamos la conexión del socket
     io.on("connection", async function (socket) {   //Mensaje que indica una conexión. 
       console.log("Un cliente se ha conectado")
-
-      //messagePool = await msgMethod.cargarMensajes()
-      //productList = await prodMethod.cargarProductos()
-
       msgMethod.cargarMensajes().then((listaMensajes)=>{
         socket.emit('messages', listaMensajes)
       })
@@ -107,9 +102,7 @@ const iniciarMain=()=>{
           
           prodMethod.cargarProductos().then((listaProductos)=>{
             
-            productList = prodMethod.data
-            console.log('main.js-> mensaje new-product: ' + listaProductos)
-            
+            productList = prodMethod.data            
             io.sockets.emit('server:productList', listaProductos)
           })
         })    
@@ -117,15 +110,13 @@ const iniciarMain=()=>{
       })
       
       server.listen(PORT, function () {   //antes era args.port
-        console.log(`Servidor corriendo en http://localhost:${PORT}`)
+        logger.info(`Servidor corriendo en http://localhost:${PORT}`)
 
       })
     }
     
       
       const args = yargs.default({ PORT: 8080, mode:'fork'}).argv
-  
-      //console.log(`PORT: ${args.PORT} -- MODE: ${args.mode}`)
   
       const PORT = process.env.PORT || 8080
   
@@ -135,16 +126,16 @@ const iniciarMain=()=>{
         if(cluster.isMaster) {    // Si el proceso es padre...
           for(let i=0; i<=numCPUs; i++){
             
-            console.log ('Creando nuevo Fork')
+            logger.info('Nuevo proceso FORK creado')
             cluster.fork()
             
           }
           
           cluster.on('exit', (worker, code, signal)=>{
-            console.log(`worker ${worker.process.id} murió`)
+            logger.info(`worker ${worker.process.id} murió`)
           })
           
-          console.log (`Proceso primario ${process.pid}`)
+          logger.info(`Proceso primario ${process.pid}`)
         }   //if(mode == 'cluster')
   
         else{           // Si el proceso es hijo en modo cluster...
@@ -153,7 +144,7 @@ const iniciarMain=()=>{
       }
   
       else{
-          console.log('Modo FORK')
+          logger.info('Modo FORK')
           iniciarMain()
       }
       

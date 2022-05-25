@@ -1,6 +1,4 @@
 const mongoose = require('mongoose')
-const fs = require('fs/promises');
-const path = require('path');
 const logger = require("../Logs/winston")
 
 class Productos{
